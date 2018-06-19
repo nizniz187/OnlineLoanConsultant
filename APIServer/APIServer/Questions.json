@@ -1,0 +1,13 @@
+[
+    {
+        "id": "1",
+        "comment": "Hi there, I'm your Online Loan Consultant!",
+        "question": [
+            "To find the best loan plan suit for you, I'm going to ask you a few questions. ",
+            "Are you Ready?"
+        ],
+        "answer": [
+            { "type": "button", "text": "START", "next": "2" }
+        ]
+    }
+]
