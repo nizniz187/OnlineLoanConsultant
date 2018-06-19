@@ -2,11 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
-
 class Logo extends React.Component {
   render() {
     return (
-      <div id="logo">LOGO</div>
+      <div id="logo" onClick={()=>{fetchNextQuestion();}}>LOGO</div>
     );
   }
 }
@@ -44,7 +43,7 @@ class Answer extends React.Component {
 
     for(let i = 0; i < options.length; i++) {
       options[i] = (
-        <Option type={options[i].type} text={options[i].text} key={i} />
+        <Option key={i} attrs={options[i]} />
       );
     }
     return options;
@@ -58,16 +57,37 @@ class Answer extends React.Component {
   }
 }
 class Option extends React.Component {
-  renderButton(text) {
+  renderButton(attrs) {
+    if(attrs.nextQId) {
+      return (
+        <button type="button" className={attrs.main && "main"} onClick={()=>fetchNextQuestion(attrs.nextQId)}>
+          {attrs.text}
+        </button>
+      );
+    } else {
+      return (
+        <button type="button">{attrs.text}</button>
+      );
+    }
+  }
+  renderTextInput(attrs) {
     return (
-      <button type="button">{text}</button>
+      <div className="input-wrapper">
+        {attrs.prefix && <span className="input-prefix">{attrs.prefix}</span> }
+        <input type={attrs.type} />
+        {attrs.suffix && <span className="input-suffix">{attrs.suffix}</span> }
+      </div>
     );
   }
   render() {
     let option = null;
-    switch(this.props.type){
+    switch(this.props.attrs.type){
       case "button":
-        option = this.renderButton(this.props.text);
+        option = this.renderButton(this.props.attrs);
+        break;
+      case "text":
+      case "tel":
+        option = this.renderTextInput(this.props.attrs);
         break;
       default:
         break;
@@ -81,15 +101,9 @@ class Content extends React.Component {
     this.state = { comment: null, question: null, answer: null };
   }
   componentDidMount() {
-    this.fetchNextQuestion();
-  }
-  fetchNextQuestion(qid) {
-    ajaxGetQuestion(qid)
-      .then((resp)=>this.setContent(JSON.parse(resp)))
-      .catch((resp)=>console.log(resp));
+    fetchNextQuestion();
   }
   setContent(data) {
-    console.log(data);
     this.setState({ comment: data.comment, question: data.question, answer: data.answer });
   }
   render() {
@@ -106,9 +120,14 @@ class Content extends React.Component {
 
 // ========================================
 
-let content = <Content />;
-document.body.onload = ()=>renderDOM();
+let content = null;
+document.body.onload = ()=>content = renderDOM();
 
+function fetchNextQuestion(qid) {
+  ajaxGetQuestion(qid)
+    .then((resp)=>content.setContent(JSON.parse(resp)))
+    .catch((resp)=>console.log(resp));
+}
 function ajaxGetQuestion(qid){
   return new Promise((resolve, reject)=>{
     let xhttp = new XMLHttpRequest();
@@ -120,9 +139,12 @@ function ajaxGetQuestion(qid){
         else { reject(this.responseText); }
       }
     };
-    xhttp.send("{ qid: qid }");
+    xhttp.send("{\"qid\": " + (qid ? qid : null) + "}");
   });
 }
-function renderDOM(data){
-  ReactDOM.render(content, document.getElementById("root"));
+function renderDOM(){
+  return ReactDOM.render(
+    <Content />, 
+    document.getElementById("root")
+  );
 }

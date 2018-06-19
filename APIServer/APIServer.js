@@ -12,7 +12,7 @@ const server = Http.createServer((req, resp)=>{
 	console.log("Parsing Request Data");
 	let postData = "", params = null;
 	req.addListener("data", (postDataChunk)=>postData += postDataChunk);
-	req.addListener("end", ()=>params = QS.parse(postData));
+	req.addListener("end", ()=>params = postData ? JSON.parse(postData) : null);
 
 	console.log("Page Reading..." + req.url);
 	let fileStream = null;
@@ -26,6 +26,7 @@ const server = Http.createServer((req, resp)=>{
 
 			data = JSON.parse(data);
 			let qid = params && params.qid ? params.qid : DefaultQid;
+			console.log("Searching data with qid = " + qid);
 			let result = data.find((q)=>{ return q.id == qid; });
 
 			resp.setHeader("Access-Control-Allow-Origin", "*");

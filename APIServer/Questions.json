@@ -7,18 +7,66 @@
             "Are you Ready?"
         ],
         "answer": [
-            { "type": "button", "text": "START", "nextQId": "2" }
+            { "type": "button", "text": "START", "nextQId": "2", "main": true }
         ]
     },
     {
-        "id": "1",
-        "comment": "Hi there, I'm your Online Loan Consultant!",
+        "id": "2",
+        "comment": "",
         "question": [
-            "To find the best loan plan suit for you, I'm going to ask you a few questions. ",
-            "Are you Ready?"
+            "What is the purpose of this loan application?"
         ],
         "answer": [
-            { "type": "button", "text": "START", "nextQId": "2" }
+            { "type": "button", "text": "Education Fund", "nextQId": "3" },
+            { "type": "button", "text": "Property Purchase", "nextQId": "3" },
+            { "type": "button", "text": "Company Working Capital", "nextQId": "3" },
+            { "type": "button", "text": "Other", "nextQId": "3" }
+        ]
+    },
+    {
+        "id": "3",
+        "comment": "",
+        "question": [
+            "How much of the loan amount do you need?"
+        ],
+        "answer": [
+            { "type": "tel", "prefix": "$" },
+            { "type": "button", "text": "Next", "nextQId": "4", "main": true }
+        ]
+    },
+    {
+        "id": "4",
+        "comment": "",
+        "question": [
+            "How much is your annual income?"
+        ],
+        "answer": [
+            { "type": "tel", "prefix": "$" },
+            { "type": "button", "text": "Next", "nextQId": "5", "main": true }
+        ]
+    },
+    {
+        "id": "5",
+        "comment": "",
+        "question": [
+            "What is your occupation?"
+        ],
+        "answer": [
+            { "type": "button", "text": "Clerk", "nextQId": "6" },
+            { "type": "button", "text": "Civil Servant", "nextQId": "6" },
+            { "type": "button", "text": "Bussiness Owner", "nextQId": "6" },
+            { "type": "button", "text": "Other", "nextQId": "6" }
+        ]
+    },
+    {
+        "id": "6",
+        "comment": "",
+        "question": [
+            "What is your age?"
+        ],
+        "answer": [
+            { "type": "tel", "suffix": "Years Old" },
+            { "type": "button", "text": "Next", "nextQId": "7", "main": true }
         ]
     }
 ]
