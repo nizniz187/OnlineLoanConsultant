@@ -134,8 +134,8 @@ function ajaxGetQuestion(qid){
     xhttp.open("POST", "http://localhost:1234/GetQuestion", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.onreadystatechange = function() {
-      if (this.readyState == 4) {
-        if(this.status == 200) { resolve(this.responseText); }
+      if (this.readyState === 4) {
+        if(this.status === 200) { resolve(this.responseText); }
         else { reject(this.responseText); }
       }
     };
